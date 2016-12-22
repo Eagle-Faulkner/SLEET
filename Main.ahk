@@ -7,6 +7,7 @@ Version = V a3.0
 SteamDir = C:\Program Files (x86)\Steam
 CurrentLine = 11
 HasDetected = 0
+ButtonPurpose = Steam Shortcut
 
 ;LOAD PREFERENCES
 ;preferred default emulator
@@ -23,14 +24,28 @@ IniRead, DefaultSaveDir, UserData.ini, UserPrefs, DefaultSaveDirectory
 LoadSupportedEmus(SupportedEmus)
 
 ;draw window
-Gui, 1: Show, x446 y228 h453 w616, SLEET | %Version%
 
-#Include GUI1.ahk
-#Include GUI2.ahk
-#Include GUI3.ahk
-#Include GUI4.ahk
-#Include GUI5.ahk
-#Include Calls.ahk
+#Include GUIWindowsExec.ahk
+#Include GUIMain.ahk
+#Include GUIEmuFindPopup.ahk
+#Include GUIUserPrefs.ahk
+#Include GUIAddEmu.ahk
+#Include GUIEmuEdit.ahk
+#Include GUISteamShortcut.ahk
+Gui, 1: Show, x446 y228 center autosize, SLEET | %Version%
+Return
+#Include GuiMainCalls.ahk
+#Include GUIEmuFindPopupCalls.ahk
+#Include GUIUserPrefsCalls.ahk
+#Include GUIAddEmuCalls.ahk
+#Include GUIEmuEditCalls.ahk
+#Include GUISteamShortcutCalls.ahk
+#Include GUIWindowsExecCalls.ahk
+
+
+
+
+#Include OtherCalls.ahk
 Return
 GuiClose:
 GuiEscape:
