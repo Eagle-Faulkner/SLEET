@@ -1,14 +1,33 @@
 EmuSupportAdd:
-	Gui, 4: Show, autosize, SLEET | %Version%
+	GoSub, UpdateNewFullCommandDisplayer
+	Gui, 4: Show, center autosize, SLEET | %Version%
+	Gui, 4:+Owner
+	Gui, 1:+Disabled
 Return
 
 
 EditPrefs:
-	Gui, 3: Show, autosize, SLEET | %Version%
+	Gui, 3: Show, center autosize, SLEET | %Version%
+	Gui, 3:+Owner
+	Gui, 1:+Disabled
+Return
+
+ImportINI:
+	Gui, 9: Show, Center Autosize, SLEET | %Version%
+	Gui, 9:+Owner
+	Gui, 1:+Disabled
+Return
+
+ReportBug:
+	Run https://docs.google.com/forms/d/e/1FAIpQLSfeT2jMf7RKvcFw-oqN9uP_8ysUfWrX8-j8tuGRaQsvAdbRzA/viewform
 Return
 
 Debug:
-	MsgBox No debug options right now.
+	MsgBox Debug start
+	
+	MsgBox No Debugs
+	
+	MsgBox Debug over
 Return
 
 UpdateButtonPurpose:
@@ -17,6 +36,15 @@ UpdateButtonPurpose:
 	GuiControl, 1:, MainButton, Make %ButtonPurpose%
 Return
 
+GetRomNameForNameField:
+	SplitPath, RomDir, ShortcutName
+	StringTrimRight, ShortcutName, ShortcutName, 4
+	GuiControl, 1:, ShortcutName, %ShortcutName%
+Return
+
+ListVariables:
+	ListVars
+Return
 
 BanNameChars:
 	GuiControlGet, ShortcutName
@@ -56,20 +84,36 @@ CheckEmuDir:
 	;Submit the information from the form
 	Gui, 1: Submit, Nohide
 	;Load the address of the emulator's directory
-	IniRead, EmulatorDir, %A_WorkingDir%\EmulatorINIs\%EmulatorChoice%.ini, EmuInfo, EmulatorLocation
+	IniRead, EmulatorDir, %A_AppData%\SLEET\EmulatorINIs\%EmulatorChoice%.ini, EmuInfo, EmulatorLocation
 	;Check if the address exists and if it doesn't, ask the user for the address of the emulator
 	IfNotExist, %EmulatorDir%
 		{
 		Gui, 2: Show, autosize, SLEET | %Version%
+		Gui, 2:+Owner
+		Gui, 1:+Disabled
 		}
 	GuiControl,1:, EmulatorDir, %EmulatorDir%
-	;IniWrite, %DefaultSaveDir%, UserData.ini, UserPrefs, DefaultSaveDirectory
+Return
+
+ActivateAdvancedGUI:
+	
+	Gui, 1: Submit, Nohide
+	GuiControl, 8:, CMD2, %CMD2%
+	GuiControl, 8:, CMD3, %CMD3%
+	GoSub, UpdateFullCommandDisplayer
+	Gui, 8: Show, center autosize, SLEET | %Version%
+	Gui, 8:+Owner
+	Gui, 1:+Disabled
 Return
 
 EmuSupportEdit:
 	GuiControlGet, EmulatorChoice
+	EditEmuName = %EmulatorChoice%
+	Gui, 5: Show, center autosize, SLEET | %Version%
+	Gui, 5:+Owner
+	Gui, 1:+Disabled
 	GuiControl, 5: Choose, EditEmuName, %EmulatorChoice%
-	Gui, 5: Show, autosize, SLEET | %Version%
+	GoSub, UpdateEditFields
 Return
 
 BrowseForRom:
@@ -87,8 +131,13 @@ MainButtonClick:
 	Else If (ButtonPurpose="Windows executable")
 		{
 		Gui, 7: Show, Center autosize , Sleet | %Version%
+		Gui, 7:+Owner
+		Gui, 1:+Disabled
 		}
-		
+	Else
+		{
+		MsgBox Please write down exactly what you did to get here so we can prevent it in the future!
+		}
 Return
 
 

@@ -1,0 +1,3 @@
+Gui, 9: Add, Edit, x10 y10 w300 vImportFileDir,
+Gui, 9: Add, Button, xp+305 yp w100 gBrowseForImportFileDir, Browse...
+Gui, 9: Add, Button, x10 yp+25 gDoImport, Import

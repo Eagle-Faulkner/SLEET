@@ -1,46 +1,76 @@
-EditEmuData:
+UpdateEditFullCommandDisplayer:
+	Gui, 5: Submit, Nohide
+	If EditQuoteAround=1
+		{
+		EditRomPath = "C:\path\to\your\rom.iso"
+		}
+	Else If EditQuoteAround=0
+		{
+		EditRomPath = C:\path\to\your\rom.iso
+		}
+	If EditEmuCMDFScrnPos=1
+		{
+		FullCommandDisplay = %EditEmulatorDir% %EditEmuCMD2% %EditEmuCMDFScrn% %EditEmuCMDLoad% %EditRomPath% %EditEmuCMD3%
+		}
+	Else If EditEmuCMDFScrnPos=2
+		{
+		FullCommandDisplay = %EditEmulatorDir% %EditEmuCMD2% %EditEmuCMDLoad% %EditRomPath% %EditEmuCMDFScrn% %EditEmuCMD3%
+		}
+	
+	GuiControl, 5:, EditFullCommandDisplayer, %FullCommandDisplay%
+Return
+
+LoadIniData:
+	GuiControlGet, EditEmuName
+	IfNotExist %A_AppData%\SLEET\EmulatorINIs\%EditEmuName%.ini
+		{
+		EditEmuName = %EmulatorChoice%
+		}
+	IniRead, EditEmuCMD2, %A_AppData%\SLEET\EmulatorINIs\%EditEmuName%.ini, BasicCommands, MidCMD
+	IniRead, EditEmuCMDLoad, %A_AppData%\SLEET\EmulatorINIs\%EditEmuName%.ini, BasicCommands, LoadCMD
+	IniRead, EditEmuCMD3, %A_AppData%\SLEET\EmulatorINIs\%EditEmuName%.ini, BasicCommands, EndCMD
+	
+	IniRead, EditEmuCMDFScrn, %A_AppData%\SLEET\EmulatorINIs\%EditEmuName%.ini, AdvCommands, FullScreenCommand
+	IniRead, EditEmuCMDFScrnPos, %A_AppData%\SLEET\EmulatorINIs\%EditEmuName%.ini, AdvCommands, FullScreenCommandLocation
+	IniRead, EditQuoteAround, %A_AppData%\SLEET\EmulatorINIs\%EditEmuName%.ini, AdvCommands, HasQuotes
+	
+	IniRead, EditEmulatorDir, %A_AppData%\SLEET\EmulatorINIs\%EditEmuName%.ini, EmuInfo, EmulatorLocation
+Return
+
+UpdateEditFields:
+	GoSub, LoadIniData
+	GuiControl, 5:, EditEmulatorDir, %EditEmulatorDir%
+	GuiControl, 5:, EditEmuCMD2, %EditEmuCMD2%
+	GuiControl, 5:, EditEmuCMDLoad, %EditEmuCMDLoad%
+	GuiControl, 5:, EditEmuCMD3, %EditEmuCMD3%
+	GuiControl, 5:, EditQuoteAround, %EditQuoteAround%
+	GuiControl, 5:, EditEmuCMDFScrn, %EditEmuCMDFScrn%
+	GuiControl, 5:Choose, EditEmuCMDFScrnPos, %EditEmuCMDFScrnPos%
+	GoSub, UpdateEditFullCommandDisplayer
+Return
+
+BrowseForEditEmulator:
+	FileSelectFile, EditEmulatorDir, 1 , %DefaultEmuDir%, Select the emulator
+	GuiControl,5:, EditEmulatorDir, %EditEmulatorDir%
+	GoSub, UpdateEditFullCommandDisplayer
+Return
+
+SaveEditEmu:
 	;submit the info from the GUI
 	Gui, 5:Submit, nohide
-	;Save the edits
-	IniWrite, %EditEmuCMD1%, %A_WorkingDir%\EmulatorINIs\%EditEmuName%.ini, BasicCommands, StartCMD
-	IniWrite, %EditEmuCMD2%, %A_WorkingDir%\EmulatorINIs\%EditEmuName%.ini, BasicCommands, MidCMD
-	IniWrite, %EditEmuCMDLoad%, %A_WorkingDir%\EmulatorINIs\%EditEmuName%.ini, BasicCommands, LoadCMD
-	IniWrite, %EditEmuCMD3%, %A_WorkingDir%\EmulatorINIs\%EditEmuName%.ini, BasicCommands, EndCMD
-	IniWrite, %EditEmuCMDFScrn%, %A_WorkingDir%\EmulatorINIs\%EditEmuName%.ini, AdvCommands, FullScreenCommand
-	IniWrite, %EditEmuCMDFScrnPos%, %A_WorkingDir%\EmulatorINIs\%EditEmuName%.ini, AdvCommands, FullScreenCommandLocation
-	IniWrite, %EditEmulatorDir%, %A_WorkingDir%\EmulatorINIs\%EditEmuName%.ini, EmuInfo, EmulatorLocation
-	;alert the user
-	MsgBox, %EditEmuName% has been updated!
-	;close the GUI
-	Gui, 5: Cancel
-Return
-
-
-DeleteEmuData:
-	;Deletes the INI of the selected emulator
-	FileDelete, %A_WorkingDir%\EmulatorINIs\%EditEmuName%.ini
-	;updates all the lists
-	GuiControl, 1:, EmulatorChoice, |%SupportedEmus%
-	GuiControl, 1: Choose, EmulatorChoice, %DefaultEmu%
-	GuiControl, 3:, DefaultEmu, |%SupportedEmus%
-	GuiControl, 3: Choose, DefaultEmu, %DefaultEmu%
-	GuiControl, 5:, EditEmuName, |%SupportedEmus%
-	MsgBox %EditEmuName% Has been deleted!
-Return
-
-
-UpdateEditEmuGUI:
-	Gui, 5: Submit, Nohide
-	IniRead, EditEmuCMD1, %A_WorkingDir%\EmulatorINIs\%EditEmuName%.ini, BasicCommands, StartCMD
-	GuiControl, 5:, EditEmuCMD1, %EditEmuCMD1%
-	IniRead, EditEmuCMD2, %A_WorkingDir%\EmulatorINIs\%EditEmuName%.ini, BasicCommands, MidCMD
-	GuiControl, 5:, EditEmuCMD2, %EditEmuCMD2%
-	IniRead, EditEmuCMDLoad, %A_WorkingDir%\EmulatorINIs\%EditEmuName%.ini, BasicCommands, LoadCMD
-	GuiControl, 5:, EditEmuCMDLoad, %EditEmuCMDLoad%
-	IniRead, EditEmuCMD3, %A_WorkingDir%\EmulatorINIs\%EditEmuName%.ini, BasicCommands, EndCMD
-	GuiControl, 5:, EditEmuCMD3, %EditEmuCMD3%
-	IniRead, EditEmuCMDFScrn, %A_WorkingDir%\EmulatorINIs\%EditEmuName%.ini, AdvCommands, FullScreenCommand
-	GuiControl, 5:, EditEmuCMDFScrn, %EditEmuCMDFScrn%
-	IniRead, EditEmuCMDFScrnPos, %A_WorkingDir%\EmulatorINIs\%EditEmuName%.ini, AdvCommands, FullScreenCommandLocation
-	GuiControl, 5: Choose, EditEmuCMDFScrnPos, %EditEmuCMDFScrnPos%
+	;Save all the info to a Edit INI file with the name the user provided
+	IniWrite, %EditEmuCMD2%, %A_AppData%\SLEET\EmulatorINIs\%EditEmuName%.ini, BasicCommands, MidCMD
+	IniWrite, %EditEmuCMDLoad%, %A_AppData%\SLEET\EmulatorINIs\%EditEmuName%.ini, BasicCommands, LoadCMD
+	IniWrite, %EditEmuCMD3%, %A_AppData%\SLEET\EmulatorINIs\%EditEmuName%.ini, BasicCommands, EndCMD
+	
+	IniWrite, %EditEmuCMDFScrn%, %A_AppData%\SLEET\EmulatorINIs\%EditEmuName%.ini, AdvCommands, FullScreenCommand
+	IniWrite, %EditEmuCMDFScrnPos%, %A_AppData%\SLEET\EmulatorINIs\%EditEmuName%.ini, AdvCommands, FullScreenCommandLocation
+	IniWrite, %EditQuoteAround%, %A_AppData%\SLEET\EmulatorINIs\%EditEmuName%.ini, AdvCommands, HasQuotes
+	
+	IniWrite, %EditEmulatorDir%, %A_AppData%\SLEET\EmulatorINIs\%EditEmuName%.ini, EmuInfo, EmulatorLocation
+	;Tell the user it was completed
+	MsgBox, %EditEmuName% has been Updated!
+	;Close the GUI
+	Gui, 5: 
+	Gui, 1:-Disabled
 Return

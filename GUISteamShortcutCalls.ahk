@@ -1,6 +1,7 @@
 
 Submit:
 	MsgBox Submitted
+	GoSub, CreateShortcut
 Return
 
 EditSteamDir:
@@ -91,26 +92,29 @@ DetectSteamUsers:
 			}
 		}
 	StringTrimRight, AliasList, AliasList, 1
-	MsgBox Steam users have been detected!
 	GuiControl,6:, AliasChoice, |%AliasList%
 	GuiControl, 6:Choose, AliasChoice, 1
 	Gui, 6: Show, center autosize, SLEET | %Version%
+	Gui, 6:+Owner
+	Gui, 1:+Disabled
 Return
 
 CreateShortcut:
+	Process, Exist, Steam.exe
+	If ErrorLevel ;Steam open
+		{
+		MsgBox You can't add Steam shortcuts if Steam is running.`r`nPlease close Steam and try again.
+		Return
+		}
 	Gui, 1:Submit, Nohide
 	Gui, 6:Submit, Nohide
 	GuiControlGet, CurrentNameChoice, , AliasChoice, text
 	Guicontrolget, AliasChoice, , AliasChoice,
-	If (HasDetected=0)
-		{
-		MsgBox You haven't chosen a Steam user!
-		Return
-		}
 	UserNameChoice := UserName%AliasChoice%
 	UserIDChoice := UserID%AliasChoice%
 	VDFDir = %SteamDir%\userdata\%UserIDChoice%
 	File := FileOpen(VDFDir . "\config\Shortcuts.vdf","a")
+	
 	If !IsObject(File)
 		{
 		MsgBox VDF ERROR`r`nFile not found!
@@ -129,8 +133,8 @@ CreateShortcut:
 	File.WriteChar(1)
 	File.Write("exe") ;filetype being pointed to, don't change
 	File.WriteChar(0)
-	RomDir = "%RomDir%"
 	EmulatorDir = "%EmulatorDir%"
+	
 	File.Write(EmulatorDir " " CMD2 " " CMDLoad " " RomDir " " CMD3) ;path to the exe along with any commands needed
 	File.WriteChar(0)
 	File.WriteChar(1)

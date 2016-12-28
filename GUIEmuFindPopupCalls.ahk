@@ -5,7 +5,7 @@
 
 SaveEmuDir:
 	Gui, 2: Submit, nohide
-	IniWrite, %EmulatorDir%, %A_WorkingDir%\EmulatorINIs\%EmulatorChoice%.ini, EmuInfo, EmulatorLocation
+	IniWrite, %EmulatorDir%, %A_AppData%\SLEET\EmulatorINIs\%EmulatorChoice%.ini, EmuInfo, EmulatorLocation
 	Gui, 2: Destroy
 Return
 
