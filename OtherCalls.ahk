@@ -44,17 +44,19 @@ AddFullScrnCMD:
 		}
 Return
 
+AddQuotesCMD:
+	If HasQuotes
+		{
+		RomDir = "%RomDir%"
+		}
+Return
+
 	
 ;Function to fill the variables needed for what will be executed in the command line of the exe
 MakeCMD(ByRef CMD1, ByRef CMD2, ByRef CMDLoad, ByRef CMD3, ByRef CMDFScrn, ByRef CMDFScrnPos, ByRef EmulatorChoice, ByRef EmulatorDir,ByRef RomDir)
 	{
 	;Read the commands from the emulator's INI
-	IniRead, CMD1, %A_AppData%\SLEET\EmulatorINIs\%EmulatorChoice%.ini, BasicCommands, StartCMD
-	IniRead, CMD2, %A_AppData%\SLEET\EmulatorINIs\%EmulatorChoice%.ini, BasicCommands, MidCMD
-	IniRead, CMDLoad, %A_AppData%\SLEET\EmulatorINIs\%EmulatorChoice%.ini, BasicCommands, LoadCMD
-	IniRead, CMD3, %A_AppData%\SLEET\EmulatorINIs\%EmulatorChoice%.ini, BasicCommands, EndCMD
-	IniRead, CMDFScrn, %A_AppData%\SLEET\EmulatorINIs\%EmulatorChoice%.ini, AdvCommands, FullScreenCommand
-	IniRead, CMDFScrnPos, %A_AppData%\SLEET\EmulatorINIs\%EmulatorChoice%.ini, AdvCommands, FullScreenCommandLocation
+	GoSub, LoadFromEmuINI
 	;Logic to determine where the fullscreen command would be located
 	GoSub, AddFullScrnCMD
 	;special line of code for setting up MAME exes because MAME's commands don't fit the standard format that the rest of the emulators fit

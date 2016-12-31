@@ -3,6 +3,7 @@ CreateFile:
 	;Submit the information from the GUI form
 	Gui, 1: Submit, NoHide
 	Gui, 7: Submit, Nohide
+	GoSub, AddQuotesCMD
 	IfNotExist, %EmulatorDir%
 		{
 		MsgBox Uh oh!`r`nLooks like your emulator is missing!

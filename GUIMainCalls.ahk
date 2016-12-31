@@ -22,6 +22,14 @@ ReportBug:
 	Run https://docs.google.com/forms/d/e/1FAIpQLSfeT2jMf7RKvcFw-oqN9uP_8ysUfWrX8-j8tuGRaQsvAdbRzA/viewform
 Return
 
+AboutThing:
+	MsgBox SLEET %Version%`r`nWebsite: https://eagle-faulkner.github.io/projects/SLEET/sleet.html`r`nGitHub: https://github.com/Eagle-Faulkner/SLEET`r`n`r`nSLEET is under GNU General Public License v3
+Return
+
+OpenManual:
+	Run %A_WorkingDir%\Resources\SLEETManual.pdf
+Return
+
 Debug:
 	MsgBox Debug start
 	
@@ -83,6 +91,7 @@ Return
 CheckEmuDir:
 	;Submit the information from the form
 	Gui, 1: Submit, Nohide
+	GoSub, LoadFromEmuINI
 	;Load the address of the emulator's directory
 	IniRead, EmulatorDir, %A_AppData%\SLEET\EmulatorINIs\%EmulatorChoice%.ini, EmuInfo, EmulatorLocation
 	;Check if the address exists and if it doesn't, ask the user for the address of the emulator
@@ -126,7 +135,16 @@ Return
 MainButtonClick:
 	If (ButtonPurpose="Steam shortcut")
 		{
+		Process, Exist, Steam.exe
+		If ErrorLevel ;Steam open
+			{
+			MsgBox You can't add Steam shortcuts if Steam is running.`r`nPlease close Steam and try again.
+			Return
+			}
+		Gui, 6: Show, center autosize, SLEET | %Version%
 		GoTo DetectSteamUsers
+		Gui, 6:+Owner
+		Gui, 1:+Disabled
 		}
 	Else If (ButtonPurpose="Windows executable")
 		{

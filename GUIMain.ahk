@@ -8,9 +8,9 @@ Menu, MenuMenu, Add, &Import emulator ini,ImportINI
 Menu, MenuMenu, Add, &User Preferences, EditPrefs
 
 ;Create option "About" in menu "Help"
-Menu, MenuHelp, Add, &About, NoUse
+Menu, MenuHelp, Add, &About, AboutThing
 ;Create option "Manual" in menu "Help"
-Menu, MenuHelp, Add, &Manual, NoUse
+Menu, MenuHelp, Add, &Manual, OpenManual
 ;Create option "Report a bug" in menu "Help"
 Menu, MenuHelp, Add, &Report a bug, ReportBug
 

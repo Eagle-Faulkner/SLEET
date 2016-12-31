@@ -7,15 +7,15 @@ Gui, 5: Add, Button, xp+200 yp w100 gUpdateEditFullCommandDisplayer, Browse...
 Gui, 5: Add, Edit, x10 yp+25 w300 vEditEmulatorDir gUpdateEditFullCommandDisplayer, %EditEmulatorDir%
 
 ;Emulator Mid command
-Gui, 5: Add, Text, xp yp+25, Minimal commands needed prior to loading the emulator:
+Gui, 5: Add, Text, xp yp+25, Minimal commands needed prior to loading the rom:
 Gui, 5: Add, Edit, xp yp+25 w300 vEditEmuCMD2 gUpdateEditFullCommandDisplayer, %EditEmuCMD2%
 
 ;Emulator load command
-Gui, 5: Add, Text, xp yp+25, Command needed to load the emulator:
+Gui, 5: Add, Text, xp yp+25, Command needed to load the rom:
 Gui, 5: Add, Edit, xp yp+25 w300 vEditEmuCMDLoad gUpdateEditFullCommandDisplayer, %EditEmuCMDLoad%
 
 ;Emulator end command
-Gui, 5: Add, Text, xp yp+25, Minimal commands needed after loading the emulator:
+Gui, 5: Add, Text, xp yp+25, Minimal commands needed after loading the rom:
 Gui, 5: Add, Edit, xp yp+25 w300 vEditEmuCMD3 gUpdateEditFullCommandDisplayer, %EditEmuCMD3%
 
 ;Does it have quotes around the romdir?

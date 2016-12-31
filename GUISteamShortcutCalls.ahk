@@ -1,22 +1,16 @@
 
-Submit:
-	MsgBox Submitted
-	GoSub, CreateShortcut
-Return
 
 EditSteamDir:
 	GuiControlGet, SteamDir, , , 
 Return
 
-BrowseForSteamDir:
-	FileSelectFolder, SteamDir, , , Locate your Steam Install 
-	GuiControl,6:, SteamDir, %SteamDir%
-Return
 
 DetectSteamUsers:
 	Gui, 6:Submit, NoHide
-	HasDetected = 1
-	ConfigDir = %SteamDir%\Config\config.vdf
+	If HasDetectedUsers
+		{
+		Return
+		}
 	Loop
 		{
 		FileReadLine, name, %SteamDir%\Config\Config.vdf, CurrentLine
@@ -91,21 +85,17 @@ DetectSteamUsers:
 			Break
 			}
 		}
+	CurrentLine = 11
 	StringTrimRight, AliasList, AliasList, 1
+	If !(AliasList = "")
+		{
+		HasDetectedUsers = 1
+		}
 	GuiControl,6:, AliasChoice, |%AliasList%
 	GuiControl, 6:Choose, AliasChoice, 1
-	Gui, 6: Show, center autosize, SLEET | %Version%
-	Gui, 6:+Owner
-	Gui, 1:+Disabled
 Return
 
 CreateShortcut:
-	Process, Exist, Steam.exe
-	If ErrorLevel ;Steam open
-		{
-		MsgBox You can't add Steam shortcuts if Steam is running.`r`nPlease close Steam and try again.
-		Return
-		}
 	Gui, 1:Submit, Nohide
 	Gui, 6:Submit, Nohide
 	GuiControlGet, CurrentNameChoice, , AliasChoice, text
@@ -114,7 +104,7 @@ CreateShortcut:
 	UserIDChoice := UserID%AliasChoice%
 	VDFDir = %SteamDir%\userdata\%UserIDChoice%
 	File := FileOpen(VDFDir . "\config\Shortcuts.vdf","a")
-	
+	GoSub, AddQuotesCMD
 	If !IsObject(File)
 		{
 		MsgBox VDF ERROR`r`nFile not found!

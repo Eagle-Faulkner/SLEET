@@ -5,13 +5,10 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance off
 Version = V a4.0
 CurrentLine = 11
-HasDetected = 0
 ButtonPurpose = Steam Shortcut
 IfNotExist %A_AppData%\SLEET\UserData.ini
 	{
-	FileCreateDir, %A_AppData%\SLEET\EmulatorINIs
-	FileCopy, %A_WorkingDir%\EmulatorINIs\*.ini, %A_AppData%\SLEET\EmulatorINIs, 1
-	FileCopy, %A_WorkingDir%\UserData.ini, %A_AppData%\SLEET\, 1
+	#Include FirstLaunch.ahk
 	}
 
 ;LOAD PREFERENCES
@@ -24,7 +21,7 @@ IniRead, DefaultRomDir, %A_AppData%\SLEET\UserData.ini, UserPrefs, DefaultRomDir
 ;Prefered location to save exes
 IniRead, DefaultSaveDir, %A_AppData%\SLEET\UserData.ini, UserPrefs, DefaultSaveDirectory
 ;Steam location
-IniRead, DefaultSaveDir, %A_AppData%\SLEET\UserData.ini, UserPrefs, DefaultSaveDirectory
+IniRead, SteamDir, %A_AppData%\SLEET\UserData.ini, UserPrefs, SteamDirectory
 
 
 ;VARIABLES

@@ -13,6 +13,11 @@ BrowseForDefaultSaveDir:
 	GuiControl,3:, DefaultSaveDir, %DefaultSaveDir%
 Return
 
+BrowseForSteamDir:
+	FileSelectFolder, SteamDir ,,
+	GuiControl,3:, SteamDir, %SteamDir%
+Return
+
 ;Function for the "Save Preferences" button
 SavePrefs:
 	;Submit contents of the form
@@ -25,8 +30,11 @@ SavePrefs:
 	IniWrite, %DefaultRomDir%, %A_AppData%\SLEET\UserData.ini, UserPrefs, DefaultRomDirectory
 	;Write default save directory to prefs
 	IniWrite, %DefaultSaveDir%, %A_AppData%\SLEET\UserData.ini, UserPrefs, DefaultSaveDirectory
+	
+	IniWrite, %SteamDir%, %A_AppData%\SLEET\UserData.ini, UserPrefs, SteamDirectory
 	;Tell user settings are saved
-	;MsgBox, Your preferences have been saved!
+	MsgBox, Your preferences have been saved!
+	GuiControl, 6:, SteamDir, %SteamDir%
 	Gui, 3: Cancel
 	Gui, 1:-Disabled
 	Gui, 1: Show

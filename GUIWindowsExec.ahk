@@ -8,9 +8,11 @@ Gui, 7: Add, Button, xp+305 yp w100 gBrowseForSave, Browse...
 ;place text
 Gui, 7: Add, Text, x10 yp+25 ,Select a custom icon(Must be a .ico file)
 ;place field for user to enter address of icon
-Gui, 7: Add, Edit, xp yp+25 w300 vIconChoice, %A_WorkingDir%\Resources\sleet.ico
+Gui, 7: Add, Edit, xp yp+25 w300 h20vIconChoice, %A_WorkingDir%\Resources\sleet.ico
 ;place button for user to navigate to icon 
-Gui, 7: Add, Button, xp+305 yp gBrowseForIcon, Browse...
+Gui, 7: Add, Button, xp+305 yp w100 gBrowseForIcon, Browse...
+
+Gui, 7: Add, Button, x10 yp+50 w100 gCreateFile, Submit
 
 
 

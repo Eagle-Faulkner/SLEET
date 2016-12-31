@@ -71,6 +71,6 @@ SaveEditEmu:
 	;Tell the user it was completed
 	MsgBox, %EditEmuName% has been Updated!
 	;Close the GUI
-	Gui, 5: 
+	Gui, 5: cancel
 	Gui, 1:-Disabled
 Return
